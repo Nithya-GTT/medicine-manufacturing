@@ -11,11 +11,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
-            <Link href="/" className="flex-shrink-0 flex items-center space-x-3 group">
-              <div className="w-24 h-16 rounded-full overflow-hidden bg-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl">
-                <img src="/logo.jpg" alt="NR Medicare Logo" className="w-full h-full object-cover" />
+            <Link href="/" className="flex-shrink-0 flex items-center space-x-4 group">
+              <div className="w-32 h-20 rounded-[50%] overflow-hidden shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl border border-black">
+                <img src="/logo.jpg" alt="NR Medicare Logo" className="w-full h-full object-contain" />
               </div>
-              <span className="text-2xl font-serif bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">NR Medicare</span>
+              <span className="text-2xl font-sans bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">NR Medicare</span>
             </Link>
           </div>
           
@@ -71,6 +71,12 @@ export default function Navbar() {
             </Link>
             <Link href="/products" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
               Products
+            </Link>
+            <Link href="/careers" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+              Careers
+            </Link>
+            <Link href="/education" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+              Individual Education
             </Link>
             <Link href="/innovations" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
               Innovations

@@ -1,11 +1,114 @@
 'use client';
 
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
+
+// Animation variants for Framer Motion
+const scaleAnimation = {
+  initial: { scale: 1 },
+  animate: { scale: [1, 1.02, 1.01, 1.02, 1.01, 1.02, 1] },
+  transition: { 
+    duration: 2,
+    repeat: Infinity,
+    ease: "easeInOut" as const
+  }
+};
+
+const scaleRotateAnimation = {
+  initial: { scale: 1, rotate: 0 },
+  animate: { 
+    scale: [1, 1.03, 1.01, 1.03, 1.01, 1.03, 1],
+    rotate: [0, 2, -2, -2, 0, 2, -2, 0]
+  },
+  transition: { 
+    duration: 2.5,
+    repeat: Infinity,
+    ease: "easeInOut" as const
+  }
+};
+
+const pulseAnimation = {
+  initial: { scale: 1, opacity: 0.5 },
+  animate: { 
+    scale: [1, 1.1, 1.05, 1.1, 1.05, 1.1, 1.05, 1],
+    opacity: [0.5, 0.8, 1, 0.8, 1, 0.8, 1, 0.8, 0.5, 1],
+    rotate: [0, 5, -5, -5, 0, 5, -5, 0]
+  },
+  transition: { 
+    duration: 3.5,
+    repeat: Infinity,
+    ease: "easeInOut" as const
+  }
+};
+
+interface ProductDetail {
+  composition: string;
+  indications: string;
+  dosage: string;
+  storage: string;
+}
+
+interface ProductDetails {
+  [key: string]: ProductDetail;
+}
 
 export default function ProductsPage() {
   const router = useRouter();
+  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+
+  const productDetails: ProductDetails = {
+    'PARANAC-PLUS': {
+      composition: 'Advanced paracetamol formulation',
+      indications: 'Pain relief and fever reduction',
+      dosage: 'As prescribed by physician',
+      storage: 'Store in cool, dry place'
+    },
+    'MONTORIN-LC': {
+      composition: 'Montelukast with Levocetirizine',
+      indications: 'Asthma and allergic rhinitis',
+      dosage: 'Once daily as directed',
+      storage: 'Keep away from moisture'
+    },
+    'PARANAC-SP': {
+      composition: 'Spasmolytic paracetamol blend',
+      indications: 'Muscle spasms and pain',
+      dosage: 'As per medical advice',
+      storage: 'Room temperature'
+    },
+    'PANFA-DSR': {
+      composition: 'Pantoprazole with Domperidone',
+      indications: 'GERD and acid reflux',
+      dosage: 'Before meals as prescribed',
+      storage: 'Store in dry place'
+    },
+    'AGUMED-625': {
+      composition: 'Amoxicillin 625mg',
+      indications: 'Bacterial infections',
+      dosage: 'Twice daily with meals',
+      storage: 'Refrigerate after opening'
+    },
+    'PARANAC-MR': {
+      composition: 'Modified release paracetamol',
+      indications: 'Chronic pain management',
+      dosage: 'Extended release formula',
+      storage: 'Cool, dry place'
+    },
+    'NR NANO-GEL': {
+      composition: 'Nanotechnology-based gel',
+      indications: 'Topical pain relief',
+      dosage: 'Apply thin layer to affected area',
+      storage: 'Store at room temperature'
+    },
+    'ITRODERM-PLUS': {
+      composition: 'Advanced dermatological formula',
+      indications: 'Skin conditions and infections',
+      dosage: 'Apply as directed by physician',
+      storage: 'Store in cool place'
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -17,86 +120,285 @@ export default function ProductsPage() {
           <p className="text-sm font-semibold uppercase text-blue-600 tracking-wider mb-2">OVERVIEW</p>
           <h1 className="text-4xl font-extrabold text-gray-900 mb-6">Meeting unmet patient needs</h1>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
-            Biocon is addressing global medical needs through a portfolio of differentiated and high quality, life-saving biotherapeutics.
-            We have used innovative science to bring competition for some of the world's most expensive medicines through our
-            generics and biosimilars, thus enabling affordable access to advanced therapies for millions of patients with chronic
-            conditions across the globe. At the same time, we are ensuring that a larger number of patients are able to access generic
-            versions of drugs like statins and immunosupressants by supplying our high quality APIs to drug makers worldwide.
-          </p>
+              NR Medicare is addressing global medical needs through a portfolio of differentiated and high quality, life-saving biotherapeutics.
+              We have used innovative science to bring competition for some of the world's most expensive medicines through our
+              generics and biosimilars, thus enabling affordable access to advanced therapies for millions of patients with chronic
+              conditions across the globe. At the same time, we are ensuring that a larger number of patients are able to access generic
+              versions of drugs like statins and immunosupressants by supplying our high quality APIs to drug makers worldwide.
+            </p>
         </div>
       </div>
 
       {/* Product Categories Section */}
       <div className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Generics Card */}
-            <div 
-              onClick={() => router.push('/products/generics')}
-              className="bg-orange-600 rounded-lg shadow-lg p-8 flex flex-col justify-between transform transition duration-300 hover:scale-105 cursor-pointer"
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Products</h2>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {/* PARANAC-PLUS Card */}
+            <motion.div 
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
             >
-              <div>
-                <svg className="w-16 h-16 text-white mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                </svg>
-                <h3 className="text-2xl font-bold text-white mb-2">GENERICS</h3>
-                <p className="text-white opacity-90">
-                  High-quality generic medicines that make healthcare affordable and accessible to millions worldwide.
-                </p>
+              <div className="aspect-square bg-gray-100 flex items-center justify-center">
+                <motion.img 
+                  src="/M1.jpg" 
+                  alt="PARANAC-PLUS" 
+                  className="w-full h-full object-cover"
+                  animate={scaleAnimation}
+                />
               </div>
-              <div className="text-white text-2xl font-bold mt-4">{'>>'}</div>
-            </div>
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-gray-900 text-center mb-3">PARANAC-PLUS</h3>
+                <button 
+                  onClick={() => router.push('/products/paranac-plus')}
+                  className="w-full bg-gray-700 text-white py-1 px-3 rounded hover:bg-gray-800 transition-colors duration-300 font-semibold text-xs"
+                >
+                  View Details
+                </button>
+              </div>
+            </motion.div>
 
-            {/* Biosimilars Card */}
-            <div 
-              onClick={() => router.push('/products/biosimilars')}
-              className="bg-green-600 rounded-lg shadow-lg p-8 flex flex-col justify-between transform transition duration-300 hover:scale-105 cursor-pointer"
+            {/* MONTORIN-LC Card */}
+            <motion.div 
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
             >
-              <div>
-                <svg className="w-16 h-16 text-white mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                </svg>
-                <h3 className="text-2xl font-bold text-white mb-2">BIOSIMILARS</h3>
-                <p className="text-white opacity-90">
-                  Advanced biologic medicines that provide affordable alternatives to expensive branded biologics.
-                </p>
+              <div className="aspect-square bg-gray-100 flex items-center justify-center">
+                <motion.img 
+                  src="/M2.png" 
+                  alt="MONTORIN-LC" 
+                  className="w-full h-full object-cover"
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    y: [0, -3, 0]
+                  }}
+                  transition={{ 
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    repeatDelay: 1
+                  }}
+                />
               </div>
-              <div className="text-white text-2xl font-bold mt-4">{'>>'}</div>
-            </div>
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-gray-900 text-center mb-3">MONTORIN-LC</h3>
+                <button 
+                  onClick={() => router.push('/products/montinor-lc')}
+                  className="w-full bg-gray-700 text-white py-1 px-3 rounded hover:bg-gray-800 transition-colors duration-300 font-semibold text-xs"
+                >
+                  View Details
+                </button>
+              </div>
+            </motion.div>
 
-            {/* Branded Formulation Card */}
-            <div 
-              onClick={() => router.push('/products/branded-formulations')}
-              className="bg-blue-900 rounded-lg shadow-lg p-8 flex flex-col justify-between transform transition duration-300 hover:scale-105 cursor-pointer"
+            {/* PARANAC-SP Card */}
+            <motion.div 
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
             >
-              <div>
-                <svg className="w-16 h-16 text-white mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
-                <h3 className="text-2xl font-bold text-white mb-2">BRANDED FORMULATION</h3>
-                <p className="text-white opacity-90">
-                  Innovative branded pharmaceutical products with proven efficacy and safety profiles.
-                </p>
+              <div className="aspect-square bg-gray-100 flex items-center justify-center">
+                <motion.img 
+                  src="/M3.png" 
+                  alt="PARANAC-SP" 
+                  className="w-full h-full object-cover"
+                  animate={{ 
+                    scale: [1, 1.06, 1],
+                    rotate: [0, 1, -1, 0]
+                  }}
+                  transition={{ 
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    repeatDelay: 0.5
+                  }}
+                />
               </div>
-              <div className="text-white text-2xl font-bold mt-4">{'>>'}</div>
-            </div>
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-gray-900 text-center mb-3">PARANAC-SP</h3>
+                <button 
+                  onClick={() => router.push('/products/paranac-sp')}
+                  className="w-full bg-gray-700 text-white py-1 px-3 rounded hover:bg-gray-800 transition-colors duration-300 font-semibold text-xs"
+                >
+                  View Details
+                </button>
+              </div>
+            </motion.div>
 
-            {/* Novel Biologics Card */}
-            <div 
-              onClick={() => router.push('/products/novel-biologics')}
-              className="bg-purple-600 rounded-lg shadow-lg p-8 flex flex-col justify-between transform transition duration-300 hover:scale-105 cursor-pointer"
+            {/* PANFA-DSR Card */}
+            <motion.div 
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
             >
-              <div>
-                <svg className="w-16 h-16 text-white mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                <h3 className="text-2xl font-bold text-white mb-2">NOVEL BIOLOGICS</h3>
-                <p className="text-white opacity-90">
-                  Cutting-edge biologic therapies developed through innovative research and advanced technology.
-                </p>
+              <div className="aspect-square bg-gray-100 flex items-center justify-center">
+                <motion.img 
+                  src="/M4.png" 
+                  alt="PANFA-DSR" 
+                  className="w-full h-full object-cover"
+                  animate={{ 
+                    scale: [1, 1.04, 1],
+                    x: [0, 2, 0]
+                  }}
+                  transition={{ 
+                    duration: 3.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    repeatDelay: 0.8
+                  }}
+                />
               </div>
-              <div className="text-white text-2xl font-bold mt-4">{'>>'}</div>
-            </div>
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-gray-900 text-center mb-3">PANFA-DSR</h3>
+                <button 
+                  onClick={() => router.push('/products/panfa-dsr')}
+                  className="w-full bg-gray-700 text-white py-1 px-3 rounded hover:bg-gray-800 transition-colors duration-300 font-semibold text-xs"
+                >
+                  View Details
+                </button>
+              </div>
+            </motion.div>
+
+            {/* AGUMED-625 Card */}
+            <motion.div 
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="aspect-square bg-gray-100 flex items-center justify-center">
+                <motion.img 
+                  src="/M5.png" 
+                  alt="AGUMED-625" 
+                  className="w-full h-full object-cover"
+                  animate={{ 
+                    scale: [1, 1.03, 1],
+                    opacity: [0.8, 1, 0.8]
+                  }}
+                  transition={{ 
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-gray-900 text-center mb-3">AGUMED-625</h3>
+                <button 
+                  onClick={() => router.push('/products/agumed-625')}
+                  className="w-full bg-gray-700 text-white py-1 px-3 rounded hover:bg-gray-800 transition-colors duration-300 font-semibold text-xs"
+                >
+                  View Details
+                </button>
+              </div>
+            </motion.div>
+
+            {/* PARANAC-MR Card */}
+            <motion.div 
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="aspect-square bg-gray-100 flex items-center justify-center">
+                <motion.img 
+                  src="/M6.png" 
+                  alt="PARANAC-MR" 
+                  className="w-full h-full object-cover"
+                  animate={{ 
+                    scale: [1, 1.05, 1],
+                    y: [0, -2, 0],
+                    opacity: [0.9, 1, 0.9]
+                  }}
+                  transition={{ 
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut" as const,
+                    repeatDelay: 1.2
+                  }}
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-gray-900 text-center mb-3">PARANAC-MR</h3>
+                <button 
+                  onClick={() => router.push('/products/paranac-mr')}
+                  className="w-full bg-gray-700 text-white py-1 px-3 rounded hover:bg-gray-800 transition-colors duration-300 font-semibold text-xs"
+                >
+                  View Details
+                </button>
+              </div>
+            </motion.div>
+
+            {/* NR NANO-GEL Card */}
+            <motion.div 
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="aspect-square bg-gray-100 flex items-center justify-center">
+                <motion.img 
+                  src="/M7.PNG" 
+                  alt="NR NANO-GEL" 
+                  className="w-full h-full object-cover"
+                  animate={{ 
+                    scale: [1, 1.08, 1],
+                    opacity: [0.85, 1, 0.85]
+                  }}
+                  transition={{ 
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut" as const,
+                    repeatDelay: 1.5
+                  }}
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-gray-900 text-center mb-3">NR NANO-GEL</h3>
+                <button 
+                  onClick={() => router.push('/products/nr-nano-gel')}
+                  className="w-full bg-gray-700 text-white py-1 px-3 rounded hover:bg-gray-800 transition-colors duration-300 font-semibold text-xs"
+                >
+                  View Details
+                </button>
+              </div>
+            </motion.div>
+
+            {/* ITRODERM-PLUS Card */}
+            <motion.div 
+              className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="aspect-square bg-gray-100 flex items-center justify-center">
+                <motion.img 
+                  src="/M8.PNG" 
+                  alt="ITRODERM-PLUS" 
+                  className="w-full h-full object-cover"
+                  animate={{ 
+                    scale: [1, 1.06, 1],
+                    opacity: [0.9, 1, 0.9]
+                  }}
+                  transition={{ 
+                    duration: 3.5,
+                    repeat: Infinity,
+                    ease: "easeInOut" as const,
+                    repeatDelay: 1.8
+                  }}
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-gray-900 text-center mb-3">ITRODERM-PLUS</h3>
+                <button 
+                  onClick={() => router.push('/products/itroderm-plus')}
+                  className="w-full bg-gray-700 text-white py-1 px-3 rounded hover:bg-gray-800 transition-colors duration-300 font-semibold text-xs"
+                >
+                  View Details
+                </button>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>

@@ -647,7 +647,7 @@ export default function CareersPage() {
                 
                 <h4 className="text-lg font-semibold text-gray-800 mb-4">5. Confidentiality</h4>
                 <p className="text-gray-600 mb-6">
-                  All information shared during the recruitment process is confidential. Candidates are expected to maintain confidentiality regarding any proprietary information they may encounter during interviews.
+                  info@nrmedicare@gmail.com the recruitment process is confidential. Candidates are expected to maintain confidentiality regarding any proprietary information they may encounter during interviews.
                 </p>
                 
                 <h4 className="text-lg font-semibold text-gray-800 mb-4">6. Background Verification</h4>
@@ -672,7 +672,7 @@ export default function CareersPage() {
                 
                 <h4 className="text-lg font-semibold text-gray-800 mb-4">10. Contact Information</h4>
                 <p className="text-gray-600 mb-6">
-                  For any questions regarding these Terms & Conditions, please contact our HR department at hr@nrmedicare.com.
+                  For any questions regarding these Terms & Conditions, please contact our HR department at info@nrmedicare@gmail.com.
                 </p>
                 
                 <div className="bg-gray-50 p-4 rounded-lg mt-8">
