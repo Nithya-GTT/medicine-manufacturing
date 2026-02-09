@@ -1,12 +1,93 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import { useState, useEffect } from 'react';
+
+type Message = {
+  text: string;
+  sender: 'user' | 'bot';
+};
 
 export default function Home() {
   const [currentImage, setCurrentImage] = useState(0);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState<Message[]>([
+    { text: '👋 Welcome to NR Medicare! How can we help you today?', sender: 'bot' }
+  ]);
+
+  const handleSendMessage = () => {
+    if (message.trim()) {
+      const userMessage = { text: message, sender: 'user' as const };
+      setMessages([...messages, userMessage]);
+      setMessage('');
+
+      // Generate bot response based on user message
+      const lowerMessage = message.toLowerCase();
+      let botResponse = '';
+
+      // Website information responses
+      if (lowerMessage.includes('about') || lowerMessage.includes('company') || lowerMessage.includes('who are you')) {
+        botResponse = 'NR Medicare is a leading pharmaceutical manufacturing company committed to delivering high-quality, affordable medicines with global standards. We specialize in pharmaceutical formulations and serve 50+ countries worldwide.';
+      }
+      else if (lowerMessage.includes('contact') || lowerMessage.includes('phone') || lowerMessage.includes('call')) {
+        botResponse = '📞 Contact Information:\n• Phone: +91 9663664548\n• Email: infotechnrmedicare@gmail.com\n• Address: No 36, 1st Floor, Giridhama Layout, Rajarajeshwarinagar, Bangalore – 560098\n• Business Hours: Mon-Fri 9AM-6PM, Sat 10AM-2PM';
+      }
+      else if (lowerMessage.includes('product') || lowerMessage.includes('medicine') || lowerMessage.includes('drug')) {
+        botResponse = '💊 Our Products:\n• PARANAC-PLUS (Pain relief)\n• MONTORIN-LC (Asthma/Allergy)\n• PARANAC-SP (Muscle spasms)\n• PANFA-DSR (GERD/Acid reflux)\n• AGUMED-625 (Antibiotic)\n• PARANAC-MR (Chronic pain)\n• NR NANO-GEL (Topical pain)\n• ITRODERM-PLUS (Skin conditions)';
+      }
+      else if (lowerMessage.includes('quality') || lowerMessage.includes('certification') || lowerMessage.includes('standard')) {
+        botResponse = '🏆 Quality Excellence:\nNR Medicare maintains the highest quality standards with USFDA, EDQM, and WHO-GMP certified manufacturing facilities. We have 99% quality success rate and 1000+ research projects completed.';
+      }
+      else if (lowerMessage.includes('career') || lowerMessage.includes('job') || lowerMessage.includes('work')) {
+        botResponse = '💼 Careers:\nWe are always looking for talented professionals to join our team. Send your resume to infotechnrmedicare@gmail.com for career opportunities at NR Medicare.';
+      }
+      else if (lowerMessage.includes('innovation') || lowerMessage.includes('research') || lowerMessage.includes('r&d')) {
+        botResponse = '🔬 Innovation:\nNR Medicare invests heavily in research and development with advanced R&D facilities. We focus on breakthrough technologies and innovative pharmaceutical formulations to meet evolving healthcare needs.';
+      }
+      else if (lowerMessage.includes('education') || lowerMessage.includes('training')) {
+        botResponse = '📚 Individual Education:\nWe provide educational programs and training for healthcare professionals and individuals interested in pharmaceutical sciences. Contact us for more information about our educational initiatives.';
+      }
+      else if (lowerMessage.includes('order') || lowerMessage.includes('purchase') || lowerMessage.includes('buy')) {
+        botResponse = '📦 Ordering:\nTo place orders or inquire about pricing, please contact our sales team:\n• Phone: +91 9663664548\n• Email: infotechnrmedicare@gmail.com\nWe offer competitive pricing for bulk orders.';
+      }
+      else if (lowerMessage.includes('website') || lowerMessage.includes('details') || lowerMessage.includes('all') || lowerMessage.includes('everything')) {
+        botResponse = '🌐 NR Medicare Complete Information:\n\n🏢 Company: Leading pharmaceutical manufacturer\n📍 Location: Bangalore, India\n📞 Contact: +91 9663664548\n📧 Email: infotechnrmedicare@gmail.com\n\n💊 Products: 8+ pharmaceutical formulations\n🌍 Reach: 50+ countries served\n🏆 Quality: USFDA, EDQM, WHO-GMP certified\n📊 Experience: 25+ years\n🔬 Research: 1000+ projects\n✅ Success: 99% quality rate\n\n📞 For orders: Call +91 9663664548\n💼 For careers: Email infotechnrmedicare@gmail.com';
+      }
+      else if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+        botResponse = 'Hello! Welcome to NR Medicare! 👋\n\nI can help you with information about:\n• Our products and medicines\n• Company details and contact info\n• Quality certifications\n• Career opportunities\n• Ordering information\n• And much more!\n\nWhat would you like to know?';
+      }
+      else {
+        botResponse = 'Thank you for your message! Our team will get back to you soon. For urgent queries, please call us at +91 9663664548 or email infotechnrmedicare@gmail.com. Is there anything specific about NR Medicare I can help you with?';
+      }
+
+      // Add bot response after a short delay
+      setTimeout(() => {
+        setMessages(prev => [...prev, { text: botResponse, sender: 'bot' }]);
+      }, 800);
+
+      // Send message to backend
+      fetch('/api/send-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chatHistory: [...messages, userMessage, { text: botResponse, sender: 'bot' }],
+        }),
+      });
+    }
+  };
+
+  // Auto-slide images every 6 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % 4);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const images = [
     { src: '/home.png', title: 'Quality Healthcare', subtitle: 'Delivering excellence in pharmaceutical manufacturing' },
     { src: '/home2.jpg', title: 'Global Reach', subtitle: 'Serving patients worldwide with innovative solutions' },
@@ -22,11 +103,24 @@ export default function Home() {
     setCurrentImage((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  // Auto-slide images every 3 seconds
+  // Animation variants
+  const backgroundImageVariants = {
+    hidden: { opacity: 0, scale: 1.1 },
+    visible: { opacity: 0.3, scale: 1 },
+    exit: { opacity: 0, scale: 0.9 }
+  };
+
+  const carouselImageVariants = {
+    enter: { x: 300, opacity: 0 },
+    center: { x: 0, opacity: 1 },
+    exit: { x: -300, opacity: 0 }
+  };
+
+  // Auto-slide images every 6 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       nextImage();
-    }, 3000);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, []);
@@ -35,18 +129,18 @@ export default function Home() {
       <Navbar />
       
       {/* Fixed Chat Widgets */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col space-y-3">
+      <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col space-y-2 sm:space-y-3">
         {/* WhatsApp Button */}
-        <a href="https://wa.me/9663664548" target="_blank" rel="noopener noreferrer" className="bg-green-500 text-white w-12 h-12 rounded-full shadow-lg hover:bg-green-600 transition-colors flex items-center justify-center border border-black">
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.149-.67.149-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497 0-.198-.05-.463-.223-.66-.173-.197-.847-.847-1.011-.966-.149-.099-.348-.149-.547-.149-.199 0-.52.075-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.572-.083 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        <a href="https://wa.me/9663664548" target="_blank" rel="noopener noreferrer" className="bg-green-500 text-white w-10 h-10 sm:w-12 sm:h-12 rounded-full shadow-lg hover:bg-green-600 transition-colors flex items-center justify-center border border-black">
+          <svg className="w-5 h-5 sm:w-7 sm:h-7" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm.01 1.67c4.6 0 8.34 3.74 8.34 8.34 0 4.6-3.74 8.34-8.34 8.34-1.58 0-3.11-.44-4.44-1.27l-.32-.2-3.35.88.89-3.27-.22-.33a8.188 8.188 0 01-1.26-4.38c0-4.6 3.74-8.34 8.34-8.34zM8.53 7.33c-.16 0-.43.06-.66.31-.22.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.12.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.18 1.13.15 1.56.09.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2.02-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01z"/>
           </svg>
         </a>
         
         {/* Chat Box */}
-        <div className={`${isChatOpen ? 'w-80 h-auto rounded-lg' : 'w-12 h-12 rounded-full'} bg-black shadow-2xl p-4 flex items-center justify-center transition-all duration-300`}>
+        <div className={`${isChatOpen ? 'w-72 sm:w-80 h-auto rounded-lg' : 'w-10 h-10 sm:w-12 sm:h-12 rounded-full'} bg-black shadow-2xl p-3 sm:p-4 flex items-center justify-center transition-all duration-300`}>
           <svg 
-            className={`w-6 h-6 text-white ${isChatOpen ? 'hidden' : 'block'}`} 
+            className={`w-5 h-5 sm:w-6 sm:h-6 text-white ${isChatOpen ? 'hidden' : 'block'}`} 
             fill="none" 
             stroke="currentColor" 
             viewBox="0 0 24 24"
@@ -59,30 +153,43 @@ export default function Home() {
           {isChatOpen && (
             <div className="w-full">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-white">Chat with us</h3>
+                <h3 className="font-semibold text-white text-sm sm:text-base">Chat with us</h3>
                 <button 
                   className="text-gray-400 hover:text-white"
                   onClick={() => setIsChatOpen(false)}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
-              <div className="bg-gray-800 rounded-lg p-3 mb-3 h-32 overflow-y-auto">
-                <div className="text-sm text-gray-300">
-                  <p className="mb-2">👋 Welcome to NR Medicare!</p>
-                  <p>How can we help you today?</p>
-                </div>
+              <div className="bg-gray-800 rounded-lg p-2 sm:p-3 mb-3 h-32 overflow-y-auto">
+                {messages.map((msg, index) => (
+                  <div key={index} className={`mb-2 ${msg.sender === 'user' ? 'text-right' : 'text-left'}`}>
+                    <span className={`inline-block px-2 py-1 rounded text-xs sm:text-sm ${
+                      msg.sender === 'user' 
+                        ? 'bg-blue-600 text-white' 
+                        : 'bg-gray-700 text-gray-300'
+                    }`}>
+                      {msg.text}
+                    </span>
+                  </div>
+                ))}
               </div>
               <div className="flex items-center space-x-2">
-                <input 
-                  type="text" 
-                  placeholder="Type your message..." 
-                  className="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-gray-400 text-sm"
+                <input
+                  type="text"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                  placeholder="Type your message..."
+                  className="flex-1 px-2 py-1 sm:px-3 sm:py-2 bg-gray-700 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <button className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-colors">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button
+                  onClick={handleSendMessage}
+                  className="bg-blue-600 text-white p-1 sm:p-2 rounded hover:bg-blue-700 transition-colors"
+                >
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                   </svg>
                 </button>
@@ -93,72 +200,114 @@ export default function Home() {
       </div>
       
       <main>
-        {/* Hero Section with Image */}
-        <section className="relative text-black py-20" style={{ backgroundImage: 'url(/backhome.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <h1 className="text-4xl md:text-5xl font-bold mb-6 font-sans text-black">
-                  NR Medicare
-                </h1>
-                <p className="text-xl mb-8 text-black font-sans font-medium leading-relaxed">
-                  NR Medicare is a pharmaceutical manufacturing company committed to delivering high-quality, affordable, and reliable medicines that support better health outcomes. With a strong focus on quality, compliance, and innovation, company specializes in development and manufacturing of a wide range of pharmaceutical formulations designed to meet evolving needs of healthcare professionals and individuals.
-                </p>
-              </div>
-              <div className="relative">
-                {/* Image Gallery with Arrows */}
-                <div className="relative rounded-lg shadow-2xl overflow-hidden">
-                  <img 
-                    src={images[currentImage].src} 
-                    alt={`NR Medicare Image ${currentImage + 1}`} 
-                    className="w-full h-96 object-cover opacity-80"
-                  />
-                  
-                  {/* Text Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent">
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <h3 className="text-2xl font-bold mb-2">{images[currentImage].title}</h3>
-                      <p className="text-lg opacity-90">{images[currentImage].subtitle}</p>
-                    </div>
-                  </div>
-                  
-                  {/* Left Arrow */}
-                  <button
-                    onClick={prevImage}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200"
+        {/* Hero Section with Full Screen Image Carousel */}
+        <section className="relative text-black min-h-screen">
+          <div className="absolute inset-0">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentImage}
+                src={images[currentImage].src}
+                alt={`NR Medicare Image ${currentImage + 1}`}
+                className="w-full h-full object-cover"
+                variants={carouselImageVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+              />
+            </AnimatePresence>
+            
+            {/* Dark Overlay for Images */}
+            <div className="absolute inset-0 bg-black/60"></div>
+            
+            {/* Light Overlay for Text Readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white/60 via-white/40 to-transparent"></div>
+          </div>
+          
+          {/* Content Overlay */}
+          <div className="relative min-h-screen flex items-center">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                <div>
+                  <motion.h1 
+                    className="text-4xl md:text-6xl font-bold mb-6 font-sans mt-12 bg-gradient-to-r from-red-600 via-blue-600 to-blue-800 bg-clip-text text-transparent"
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 1, delay: 0.5 }}
                   >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
-                  </button>
-                  
-                  {/* Right Arrow */}
-                  <button
-                    onClick={nextImage}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200"
+                    NR Medicare
+                  </motion.h1>
+                  <motion.p 
+                    className="text-xl md:text-2xl mb-12 text-black font-sans font-medium leading-relaxed"
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 1, delay: 0.8 }}
                   >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                  
-                  {/* Image Indicators */}
-                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                    {images.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentImage(index)}
-                        className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                          index === currentImage 
-                            ? 'bg-white w-8' 
-                            : 'bg-white bg-opacity-50 hover:bg-opacity-75'
-                        }`}
-                      />
-                    ))}
-                  </div>
+                    NR Medicare is a pharmaceutical manufacturing company committed to delivering high-quality, affordable medicines. We focus on quality, compliance, and innovation to meet healthcare needs.
+                  </motion.p>
                 </div>
               </div>
             </div>
+          </div>
+          
+          {/* Desktop Image Navigation Controls */}
+          <div className="absolute inset-0 flex items-center justify-between px-4 sm:px-6 lg:px-8 pointer-events-none hidden lg:flex">
+            <motion.button
+              onClick={prevImage}
+              className="pointer-events-auto bg-black bg-opacity-80 hover:bg-opacity-100 text-white p-3 rounded-full shadow-lg transition-all duration-200"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </motion.button>
+            
+            <motion.button
+              onClick={nextImage}
+              className="pointer-events-auto bg-black bg-opacity-80 hover:bg-opacity-100 text-white p-3 rounded-full shadow-lg transition-all duration-200"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </motion.button>
+          </div>
+          
+          {/* Desktop Image Indicators */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 hidden lg:flex">
+            {images.map((_, index) => (
+              <motion.button
+                key={index}
+                onClick={() => setCurrentImage(index)}
+                className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                  index === currentImage 
+                    ? 'bg-black w-12' 
+                    : 'bg-black bg-opacity-50 hover:bg-opacity-75'
+                }`}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.8 }}
+                animate={{
+                  width: index === currentImage ? 48 : 12,
+                  backgroundColor: index === currentImage ? '#000000' : 'rgba(0,0,0,0.5)'
+                }}
+                transition={{ duration: 0.3 }}
+              />
+            ))}
+          </div>
+          
+          {/* Desktop Image Info Overlay */}
+          <div className="absolute bottom-8 right-8 text-black hidden lg:block">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-right"
+            >
+              <h3 className="text-2xl font-bold mb-1">{images[currentImage].title}</h3>
+              <p className="text-lg opacity-90">{images[currentImage].subtitle}</p>
+            </motion.div>
           </div>
         </section>
 

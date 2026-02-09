@@ -6,6 +6,47 @@ export default function AboutPage() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Navbar />
       
+      {/* Hero Video Section */}
+      <div className="relative w-full h-screen min-h-[600px] bg-black">
+        <video
+          className="absolute inset-0 w-full h-full object-cover opacity-100"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          poster="/aboutvideo-poster.jpg"
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center',
+            width: '100%',
+            height: '100%',
+            filter: 'brightness(1.1) contrast(1.1)'
+          }}
+        >
+          <source src="/aboutvideo.mp4" type="video/mp4" />
+          <source src="/aboutvideo.webm" type="video/webm" />
+          Your browser does not support the video tag.
+        </video>
+        
+        {/* Lighter Overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-transparent"></div>
+        
+        {/* Hero Content */}
+        <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6 lg:px-8">
+          <div className="w-full max-w-7xl text-center sm:text-left">
+            <div className="text-white">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold mb-4 sm:mb-6 text-blue-400 font-sans drop-shadow-lg">
+                About NR Medicare
+              </h1>
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-6 sm:mb-8 max-w-full sm:max-w-3xl text-white font-sans drop-shadow-lg">
+                NR Medicare advances healthcare through innovation, quality, and excellence. We deliver trusted solutions focused on safety, care, and better patient outcomes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       {/* About NR Medicare Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">

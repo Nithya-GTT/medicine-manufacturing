@@ -119,7 +119,7 @@ export default function ProductsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-sm font-semibold uppercase text-blue-600 tracking-wider mb-2">OVERVIEW</p>
           <h1 className="text-4xl font-extrabold text-gray-900 mb-6">Meeting unmet patient needs</h1>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed text-justify">
               NR Medicare is addressing global medical needs through a portfolio of differentiated and high quality, life-saving biotherapeutics.
               We have used innovative science to bring competition for some of the world's most expensive medicines through our
               generics and biosimilars, thus enabling affordable access to advanced therapies for millions of patients with chronic

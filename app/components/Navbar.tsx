@@ -2,9 +2,17 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (path: string) => {
+    if (path === '/' && pathname === '/') return true;
+    if (path !== '/' && pathname.startsWith(path)) return true;
+    return false;
+  };
 
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50 border-b-2 border-gray-200">
@@ -12,7 +20,7 @@ export default function Navbar() {
         <div className="flex justify-between h-20">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center space-x-4 group">
-              <div className="w-32 h-20 rounded-[50%] overflow-hidden shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl border border-black">
+              <div className="w-32 h-20 rounded-[50%] overflow-hidden shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl border-2 border-gray-400">
                 <img src="/logo.jpg" alt="NR Medicare Logo" className="w-full h-full object-contain" />
               </div>
               <span className="text-2xl font-sans bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">NR Medicare</span>
@@ -20,25 +28,39 @@ export default function Navbar() {
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <Link href="/" className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              isActive('/') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               Home
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <Link href="/about" className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              isActive('/about') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               About
             </Link>
-            <Link href="/products" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <Link href="/products" className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              isActive('/products') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               Products
             </Link>
-            <Link href="/careers" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <Link href="/careers" className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              isActive('/careers') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               Careers
             </Link>
-            <Link href="/education" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <Link href="/education" className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              isActive('/education') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               Individual Education
             </Link>
-            <Link href="/innovations" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <Link href="/innovations" className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              isActive('/innovations') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               Innovations
             </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <Link href="/contact" className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              isActive('/contact') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               Contact Us
             </Link>
           </div>
@@ -63,25 +85,39 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
-            <Link href="/" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+            <Link href="/" className={`block px-3 py-2 rounded-md text-base font-medium ${
+              isActive('/') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               Home
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+            <Link href="/about" className={`block px-3 py-2 rounded-md text-base font-medium ${
+              isActive('/about') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               About
             </Link>
-            <Link href="/products" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+            <Link href="/products" className={`block px-3 py-2 rounded-md text-base font-medium ${
+              isActive('/products') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               Products
             </Link>
-            <Link href="/careers" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+            <Link href="/careers" className={`block px-3 py-2 rounded-md text-base font-medium ${
+              isActive('/careers') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               Careers
             </Link>
-            <Link href="/education" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+            <Link href="/education" className={`block px-3 py-2 rounded-md text-base font-medium ${
+              isActive('/education') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               Individual Education
             </Link>
-            <Link href="/innovations" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+            <Link href="/innovations" className={`block px-3 py-2 rounded-md text-base font-medium ${
+              isActive('/innovations') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               Innovations
             </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+            <Link href="/contact" className={`block px-3 py-2 rounded-md text-base font-medium ${
+              isActive('/contact') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600'
+            }`}>
               Contact Us
             </Link>
           </div>
