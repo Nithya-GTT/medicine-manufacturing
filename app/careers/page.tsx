@@ -4,6 +4,8 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export default function CareersPage() {
   const router = useRouter();
@@ -152,8 +154,17 @@ export default function CareersPage() {
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative bg-gradient-to-r from-blue-400 to-purple-600 text-white py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <Image 
+            src="/careers.png" 
+            alt="Careers at NR Medicare" 
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Join Our Team</h1>
           <p className="text-xl max-w-3xl mx-auto opacity-90">
             Build a rewarding career with NR Medicare and contribute to transforming healthcare globally
@@ -165,21 +176,35 @@ export default function CareersPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Why Join NR Medicare?</h2>
-          <div className="w-24 h-1 bg-blue-500 mx-auto mb-6"></div>
+          <div className="w-24 h-1 bg-blue-300 mx-auto mb-6"></div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <motion.div 
+            className="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-blue-300"
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+            }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
             <h3 className="text-xl font-bold text-gray-800 mb-3">Growth Opportunities</h3>
             <p className="text-gray-600">Continuous learning and professional development programs to advance your career</p>
-          </div>
+          </motion.div>
           
-          <div className="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300">
+          <motion.div 
+            className="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-purple-500"
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+            }}
+            transition={{ duration: 0.3 }}
+          >
             <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -187,9 +212,16 @@ export default function CareersPage() {
             </div>
             <h3 className="text-xl font-bold text-gray-800 mb-3">Inclusive Culture</h3>
             <p className="text-gray-600">Diverse and collaborative work environment where every voice matters</p>
-          </div>
+          </motion.div>
           
-          <div className="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300">
+          <motion.div 
+            className="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-green-500"
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+            }}
+            transition={{ duration: 0.3 }}
+          >
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -197,7 +229,7 @@ export default function CareersPage() {
             </div>
             <h3 className="text-xl font-bold text-gray-800 mb-3">Make an Impact</h3>
             <p className="text-gray-600">Contribute to meaningful work that improves lives globally</p>
-          </div>
+          </motion.div>
         </div>
       </div>
 
@@ -206,7 +238,7 @@ export default function CareersPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Our Hiring Process</h2>
-            <div className="w-24 h-1 bg-blue-500 mx-auto mb-6"></div>
+            <div className="w-24 h-1 bg-blue-300 mx-auto mb-6"></div>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Our streamlined hiring process ensures we find the right talent while providing a great candidate experience
             </p>
@@ -214,7 +246,7 @@ export default function CareersPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
+              <div className="w-16 h-16 bg-blue-300 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
                 1
               </div>
               <h3 className="text-lg font-bold text-gray-800 mb-2">Application</h3>
@@ -252,7 +284,7 @@ export default function CareersPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Current Vacancies</h2>
-          <div className="w-24 h-1 bg-blue-500 mx-auto mb-6"></div>
+          <div className="w-24 h-1 bg-blue-300 mx-auto mb-6"></div>
           <p className="text-xl text-gray-600">Explore opportunities across various departments and locations</p>
         </div>
         
@@ -264,7 +296,7 @@ export default function CareersPage() {
               <select 
                 value={selectedDepartment}
                 onChange={(e) => setSelectedDepartment(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
               >
                 {departments.map(dept => (
                   <option key={dept} value={dept}>
@@ -279,7 +311,7 @@ export default function CareersPage() {
               <select 
                 value={selectedLocation}
                 onChange={(e) => setSelectedLocation(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
               >
                 {locations.map(loc => (
                   <option key={loc} value={loc}>
@@ -330,13 +362,13 @@ export default function CareersPage() {
                   <div className="flex space-x-3">
                     <button 
                       onClick={() => handleApplyNow(vacancy)}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-300"
+                      className="bg-blue-400 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-500 transition-colors duration-300"
                     >
                       Apply
                     </button>
                     <button 
                       onClick={() => handleViewDetails(vacancy)}
-                      className="border-2 border-blue-600 text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-300"
+                      className="border-2 border-blue-400 text-blue-400 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-300"
                     >
                       View Details
                     </button>
@@ -365,12 +397,12 @@ export default function CareersPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Life at NR Medicare</h2>
-            <div className="w-24 h-1 bg-blue-500 mx-auto mb-6"></div>
+            <div className="w-24 h-1 bg-blue-300 mx-auto mb-6"></div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">500+</div>
+              <div className="text-4xl font-bold text-blue-400 mb-2">500+</div>
               <div className="text-gray-700">Employees</div>
             </div>
             <div className="text-center">
@@ -390,7 +422,7 @@ export default function CareersPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
+      <div className="bg-gradient-to-r from-blue-400 to-purple-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Join Us?</h2>
           <p className="text-xl mb-8 opacity-90">
@@ -399,13 +431,13 @@ export default function CareersPage() {
           <div className="space-x-4">
             <button 
               onClick={handleUploadResume}
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors duration-300"
+              className="bg-white text-blue-400 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors duration-300"
             >
               Upload Resume
             </button>
             <button 
               onClick={handleJoinTalentPool}
-              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors duration-300"
+              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-400 transition-colors duration-300"
             >
               Join Talent Pool
             </button>
@@ -445,7 +477,7 @@ export default function CareersPage() {
                     type="text" 
                     name="name"
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -456,7 +488,7 @@ export default function CareersPage() {
                     type="email" 
                     name="email"
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                     placeholder="your.email@example.com"
                   />
                 </div>
@@ -467,7 +499,7 @@ export default function CareersPage() {
                     type="tel" 
                     name="phone"
                     required
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                     placeholder="+91 98765 43210"
                   />
                 </div>
@@ -477,7 +509,7 @@ export default function CareersPage() {
                   <input 
                     type="text" 
                     name="experience"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                     placeholder="e.g., 3 years"
                   />
                 </div>
@@ -488,7 +520,7 @@ export default function CareersPage() {
                 <textarea 
                   name="coverLetter"
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                   placeholder="Tell us why you're interested in this position..."
                 />
               </div>
@@ -498,7 +530,7 @@ export default function CareersPage() {
                 <input 
                   type="file" 
                   accept=".pdf,.doc,.docx"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                 />
               </div>
               

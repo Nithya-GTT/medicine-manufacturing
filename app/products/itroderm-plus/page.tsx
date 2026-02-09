@@ -10,6 +10,21 @@ export default function ItrodermPlusPage() {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
+      
+      {/* Back Button */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <button 
+            onClick={() => router.push('/products')}
+            className="flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
+          >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Products
+          </button>
+        </div>
+      </div>
 
       {/* Product Hero Section */}
       <div className="relative bg-gradient-to-r from-pink-50 to-pink-100 py-16">
@@ -17,8 +32,8 @@ export default function ItrodermPlusPage() {
           <div className="text-center">
             <h1 className="text-4xl font-bold text-pink-900 mb-4">ITRODERM-PLUS</h1>
             <p className="text-lg text-pink-700 mb-8">Advanced Dermatological Care</p>
-            <div className="w-32 h-32 mx-auto mb-8 bg-white rounded-lg shadow-lg p-4 flex items-center justify-center">
-              <div className="text-gray-400 text-sm">Image Placeholder</div>
+            <div className="w-32 h-32 mx-auto mb-8 rounded-lg shadow-lg overflow-hidden">
+              <img src="/M8.PNG" alt="ITRODERM-PLUS" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>

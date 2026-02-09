@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import Image from 'next/image';
 
 // Animation variants for Framer Motion
 const scaleAnimation = {
@@ -115,16 +116,21 @@ export default function ProductsPage() {
       <Navbar />
 
       {/* Products Overview Section */}
-      <div className="relative bg-gray-100 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-sm font-semibold uppercase text-blue-600 tracking-wider mb-2">OVERVIEW</p>
-          <h1 className="text-4xl font-extrabold text-gray-900 mb-6">Meeting unmet patient needs</h1>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed text-justify">
-              NR Medicare is addressing global medical needs through a portfolio of differentiated and high quality, life-saving biotherapeutics.
-              We have used innovative science to bring competition for some of the world's most expensive medicines through our
-              generics and biosimilars, thus enabling affordable access to advanced therapies for millions of patients with chronic
-              conditions across the globe. At the same time, we are ensuring that a larger number of patients are able to access generic
-              versions of drugs like statins and immunosupressants by supplying our high quality APIs to drug makers worldwide.
+      <div className="relative bg-gray-100 py-16 overflow-hidden">
+        <div className="absolute inset-0 opacity-50">
+          <Image 
+            src="/product.png" 
+            alt="NR Medicare Products" 
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-xl font-semibold uppercase text-blue-600 tracking-wider mb-2">OVERVIEW</p>
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-6">Our Products</h1>
+          <p className="text-lg text-black max-w-3xl mx-auto leading-relaxed text-justify">
+              NR Medicare offers a comprehensive range of high-quality pharmaceutical products developed to meet essential healthcare needs. Our portfolio includes reliable formulations and active pharmaceutical ingredients (APIs) manufactured with a strong focus on safety, consistency, and regulatory compliance.
             </p>
         </div>
       </div>
