@@ -324,7 +324,7 @@ export default function Education() {
                 {displayedDiseases.map((disease, index) => (
                   <motion.div 
                     key={index} 
-                    className="bg-white bg-opacity-90 backdrop-blur-sm border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
+                    className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -30 }}
@@ -422,7 +422,7 @@ export default function Education() {
               transition={{ duration: 0.3 }}
             >
               <motion.div 
-                className="bg-white bg-opacity-95 backdrop-blur-sm border border-gray-200 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+                className="bg-white border border-gray-200 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 20 }}

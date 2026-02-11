@@ -20,7 +20,7 @@ export default function Navbar() {
         <div className="flex justify-between h-20">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center space-x-4 group cursor-pointer">
-  <div className="w-20 h-20 overflow-hidden shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl">
+  <div className="w-32 h-16 overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl rounded-lg">
     <img src="/logo.jpg" alt="NR Medicare Logo" className="w-full h-full object-contain" />
   </div>
   <span className="text-2xl font-sans bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
