@@ -70,9 +70,16 @@ export default function Footer() {
               </li>
               <li className="flex items-center justify-center md:justify-start">
                 <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                nagendra0297@gmail.com
+                <a 
+                  href="mailto:nagendra0297@gmail.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-sm text-gray-300 hover:text-white transition-colors"
+                >
+                  nagendra0297@gmail.com
+                </a>
               </li>
             </ul>
           </div>

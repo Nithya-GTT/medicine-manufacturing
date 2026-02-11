@@ -200,14 +200,6 @@ export default function Innovations() {
             <p className="text-xl mb-8 text-blue-100">
               Partner with us to shape future of pharmaceutical innovation
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-blue-600 px-8 py-3 rounded-md font-semibold hover:bg-gray-100 transition-colors">
-                Explore Partnership Opportunities
-              </button>
-              <button className="border-2 border-white text-white px-8 py-3 rounded-md font-semibold hover:bg-white hover:text-blue-600 transition-colors">
-                View Research Publications
-              </button>
-            </div>
           </div>
         </section>
       </main>
