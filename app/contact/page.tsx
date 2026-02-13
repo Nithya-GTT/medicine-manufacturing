@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import Script from 'next/script';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -14,26 +13,7 @@ export default function Contact() {
     message: ''
   });
 
-  const form = useRef<HTMLFormElement>(null);
-  const [isEmailJSLoaded, setIsEmailJSLoaded] = useState(false);
-
-  useEffect(() => {
-    // Initialize EmailJS
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
-    script.async = true;
-    script.onload = () => {
-      (window as any).emailjs.init('-VkdNw70CCWimx_AP');
-      setIsEmailJSLoaded(true);
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -47,46 +27,39 @@ export default function Contact() {
     });
   };
 
-  const sendEmail = (e: React.FormEvent) => {
+  const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    if (!form.current || !isEmailJSLoaded) {
-      alert('Email service is loading. Please try again in a moment.');
-      return;
-    }
-
-    // EmailJS configuration
-    const serviceId = 'service_shplp7t';
-    const templateId = 'template_lny28sp';
-    const publicKey = '-VkdNw70CCWimx_AP';
-
-    const templateParams = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      company: formData.company,
-      message: formData.message
-    };
-
-    // Using EmailJS to send email
-    (window as any).emailjs.sendForm('service_hlym7mg', 'template_lny28sp', form.current, '-VkdNw70CCWimx_AP')
-      .then(
-        (response: any) => {
-          console.log('SUCCESS!', response.status, response.text);
-          alert('Message sent successfully! We will get back to you soon.');
-          setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            company: '',
-            message: ''
-          });
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        (error: any) => {
-          console.log('FAILED...', error);
-          alert('Failed to send message. Please try again later.');
-        }
-      );
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Message sent successfully! We will get back to you soon.');
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          company: '',
+          message: ''
+        });
+      } else {
+        alert(`Failed to send message: ${data.error || 'Please try again later.'}`);
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('Failed to send message. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -149,7 +122,7 @@ export default function Contact() {
                     </div>
                     <div className="flex-1">
                       <h3 className="text-base sm:text-lg font-semibold mb-1">Email</h3>
-                      <p className="text-sm sm:text-base text-gray-600">nagendra0297@gmail.com</p>
+                      <p className="text-sm sm:text-base text-gray-600">info@nrmedicare.com</p>
                     </div>
                   </div>
 
@@ -170,7 +143,7 @@ export default function Contact() {
               <div>
                 <div className="bg-gray-50 rounded-lg p-4 sm:p-6 md:p-8">
                   <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Send us a Message</h2>
-                  <form ref={form} onSubmit={sendEmail} className="space-y-3 sm:space-y-4">
+                  <form onSubmit={sendEmail} className="space-y-3 sm:space-y-4">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                         Full Name *
@@ -246,9 +219,10 @@ export default function Contact() {
 
                     <button
                       type="submit"
-                      className="w-full bg-blue-600 text-white py-2 sm:py-3 px-4 sm:px-6 text-sm sm:text-base font-semibold rounded-md hover:bg-blue-700 transition-colors"
+                      disabled={isSubmitting}
+                      className="w-full bg-blue-600 text-white py-2 sm:py-3 px-4 sm:px-6 text-sm sm:text-base font-semibold rounded-md hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed"
                     >
-                      Send Message
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
                     </button>
                   </form>
                 </div>

@@ -1,10 +1,10 @@
 'use client';
 
-
-
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { motion, AnimatePresence } from 'framer-motion';
+
+import { useRouter } from 'next/navigation';
 
 import Navbar from './components/Navbar';
 
@@ -24,6 +24,8 @@ type Message = {
 
 export default function Home() {
 
+  const router = useRouter();
+
   const [currentImage, setCurrentImage] = useState(0);
 
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -32,9 +34,87 @@ export default function Home() {
 
   const [messages, setMessages] = useState<Message[]>([
 
-    { text: '👋 Welcome to NR Medicare! How can we help you today?', sender: 'bot' }
+    { text: '👋 Welcome to NR Medicare! 🏥\n\nPlease choose a topic below to learn more about our company:', sender: 'bot' }
 
   ]);
+
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+
+  };
+
+  React.useEffect(() => {
+
+    scrollToBottom();
+
+  }, [messages]);
+
+
+
+  const handleSectionClick = (section: string) => {
+
+    const userMessage = { text: section, sender: 'user' as const };
+
+    setMessages(prev => [...prev, userMessage]);
+
+    // Generate response based on section
+
+    let botResponse = '';
+
+    switch(section) {
+
+      case 'About Company':
+
+        botResponse = '🏢 About NR Medicare:\n\nNR Medicare is a leading pharmaceutical marketing company based in Karnataka, India. Founded with a vision to deliver high-quality, affordable medicines with international standards, we specialize in pharmaceutical formulations and serve customers across Karnataka and other states in India.\n\n📊 Our Statistics:\n• 25+ years of industry experience\n• 50+ countries served globally\n• 1000+ research projects completed\n• 99% quality success rate\n• 8+ pharmaceutical formulations\n\n🎯 Our Mission: To make quality healthcare accessible to everyone through innovative pharmaceutical solutions.';
+
+        break;
+
+      case 'Our Products':
+
+        botResponse = '💊 Our Product Portfolio:\n\n🔬 Core Products:\n1. PARANAC-PLUS - Advanced pain relief medication\n2. MONTORIN-LC - Asthma and allergy treatment\n3. PARANAC-SP - Muscle spasm relaxant\n4. PANFA-DSR - GERD and acid reflux management\n5. AGUMED-625 - Broad-spectrum antibiotic\n6. PARANAC-MR - Chronic pain management\n7. NR NANO-GEL - Topical pain relief gel\n8. ITRODERM-PLUS - Dermatological conditions\n\n🏆 Quality Assurance:\n• USFDA approved manufacturing\n• EDQM certified facilities\n• WHO-GMP compliance\n• ISO 9001:2015 certified\n\n📦 For bulk orders and pricing, contact our sales team!';
+
+        break;
+
+      case 'Quality Standards':
+
+        botResponse = '🏆 Quality Excellence at NR Medicare:\n\n🔍 Certifications:\n• USFDA (United States Food and Drug Administration)\n• EDQM (European Directorate for the Quality of Medicines)\n• WHO-GMP (World Health Organization - Good Manufacturing Practices)\n• ISO 9001:2015 Quality Management\n• DCGI (Drug Controller General of India) approved\n\n📊 Quality Metrics:\n• 99% quality success rate\n• Zero tolerance policy for quality compromises\n• State-of-the-art testing laboratories\n• Continuous quality improvement programs\n• Regular audits and compliance checks\n\n🔬 Our Commitment:\nEvery product undergoes rigorous testing at multiple stages to ensure safety, efficacy, and consistency.';
+
+        break;
+
+      case 'Contact Us':
+
+        botResponse = '📞 Contact Information:\n\n🏢 Corporate Office:\n• No 36, 1st Floor, Giridhama Layout\n• Rajarajeshwarinagar, Bangalore – 560098\n\n📱 Phone Numbers:\n• +91 9663664548 (Primary)\n• +91 9480090238 (Secondary)\n\n📧 Email:\n• info@nrmedicare.com\n• sales@nrmedicare.com\n\n⏰ Business Hours:\n• Monday - Friday: 9:00 AM - 6:00 PM\n• Saturday: 10:00 AM - 2:00 PM\n• Sunday: Closed\n\n🌐 Website: www.nrmedicare.com';
+
+        break;
+
+      case 'Careers':
+
+        botResponse = '💼 Career Opportunities at NR Medicare:\n\n🚀 Why Join Us:\n• Work with industry leaders\n• Competitive salary packages\n• Professional development programs\n• Health and wellness benefits\n• Work-life balance culture\n\n📋 Current Openings:\n• Research & Development Scientists\n• Quality Assurance Specialists\n• Sales and Marketing Executives\n• Production Managers\n• Regulatory Affairs Officers\n• Supply Chain Professionals\n\n📧 How to Apply:\nSend your resume to: careers@nrmedicare.com\n\n📞 HR Contact: +91 9663664548\n\n🎓 We also offer internship programs for fresh graduates!';
+
+        break;
+
+      case 'Research & Innovation':
+
+        botResponse = '🔬 Innovation & Research at NR Medicare:\n\n💡 R&D Facilities:\n• State-of-the-art research laboratories\n• Advanced analytical equipment\n• Dedicated formulation development labs\n• Clinical research capabilities\n\n🧬 Research Focus Areas:\n• Novel drug delivery systems\n• Bioavailability enhancement\n• Generic drug development\n• Herbal medicine standardization\n• Pediatric formulations\n\n📊 Research Achievements:\n• 1000+ completed research projects\n• 25+ patents filed\n• 50+ peer-reviewed publications\n• Collaborations with leading universities\n\n🎯 Future Initiatives:\n• AI-driven drug discovery\n• Personalized medicine solutions\n• Sustainable manufacturing processes';
+
+        break;
+
+      default:
+
+        botResponse = 'Thank you for your interest! Please choose a section from the menu or type your question.';
+
+    }
+
+    setTimeout(() => {
+
+      setMessages(prev => [...prev, { text: botResponse, sender: 'bot' }]);
+
+    }, 500);
+
+  };
 
 
 
@@ -62,67 +142,67 @@ export default function Home() {
 
       if (lowerMessage.includes('about') || lowerMessage.includes('company') || lowerMessage.includes('who are you')) {
 
-        botResponse = 'NR Medicare is a leading pharmaceutical marketing company based in Karnataka, committed to delivering high-quality, affordable medicines with international standards. We specialize in pharmaceutical formulations and serve customers across Karnataka and other states in India.';
+        botResponse = '🏢 About NR Medicare:\n\nNR Medicare is a leading pharmaceutical marketing company based in Karnataka, India. Founded with a vision to deliver high-quality, affordable medicines with international standards, we specialize in pharmaceutical formulations and serve customers across Karnataka and other states in India.\n\n📊 Our Statistics:\n• 25+ years of industry experience\n• 50+ countries served globally\n• 1000+ research projects completed\n• 99% quality success rate\n• 8+ pharmaceutical formulations\n\n🎯 Our Mission: To make quality healthcare accessible to everyone through innovative pharmaceutical solutions.';
 
       }
 
-      else if (lowerMessage.includes('contact') || lowerMessage.includes('phone') || lowerMessage.includes('call')) {
+      else if (lowerMessage.includes('contact') || lowerMessage.includes('phone') || lowerMessage.includes('call') || lowerMessage.includes('reach')) {
 
-        botResponse = '📞 Contact Information:\n• Phone: +91 9663664548\n• Phone: +91 9480090238\n• Email: nagendra0297@gmail.com\n• Address: No 36, 1st Floor, Giridhama Layout, Rajarajeshwarinagar, Bangalore – 560098\n• Business Hours: Mon-Fri 9AM-6PM, Sat 10AM-2PM';
-
-      }
-
-      else if (lowerMessage.includes('product') || lowerMessage.includes('medicine') || lowerMessage.includes('drug')) {
-
-        botResponse = '💊 Our Products:\n• PARANAC-PLUS (Pain relief)\n• MONTORIN-LC (Asthma/Allergy)\n• PARANAC-SP (Muscle spasms)\n• PANFA-DSR (GERD/Acid reflux)\n• AGUMED-625 (Antibiotic)\n• PARANAC-MR (Chronic pain)\n• NR NANO-GEL (Topical pain)\n• ITRODERM-PLUS (Skin conditions)';
+        botResponse = '📞 Contact Information:\n\n🏢 Corporate Office:\n• No 36, 1st Floor, Giridhama Layout\n• Rajarajeshwarinagar, Bangalore – 560098\n\n📱 Phone Numbers:\n• +91 9663664548 (Primary)\n• +91 9480090238 (Secondary)\n\n📧 Email:\n• info@nrmedicare.com\n• sales@nrmedicare.com\n\n⏰ Business Hours:\n• Monday - Friday: 9:00 AM - 6:00 PM\n• Saturday: 10:00 AM - 2:00 PM\n• Sunday: Closed\n\n🌐 Website: www.nrmedicare.com';
 
       }
 
-      else if (lowerMessage.includes('quality') || lowerMessage.includes('certification') || lowerMessage.includes('standard')) {
+      else if (lowerMessage.includes('product') || lowerMessage.includes('medicine') || lowerMessage.includes('drug') || lowerMessage.includes('pharmaceutical')) {
 
-        botResponse = '🏆 Quality Excellence:\nNR Medicare maintains the highest quality standards with USFDA, EDQM, and WHO-GMP certified manufacturing facilities. We have 99% quality success rate and 1000+ research projects completed.';
-
-      }
-
-      else if (lowerMessage.includes('career') || lowerMessage.includes('job') || lowerMessage.includes('work')) {
-
-        botResponse = '💼 Careers:\nWe are always looking for talented professionals to join our team. Send your resume to nagendra0297@gmail.com for career opportunities at NR Medicare.';
+        botResponse = '💊 Our Product Portfolio:\n\n🔬 Core Products:\n1. PARANAC-PLUS - Advanced pain relief medication\n2. MONTORIN-LC - Asthma and allergy treatment\n3. PARANAC-SP - Muscle spasm relaxant\n4. PANFA-DSR - GERD and acid reflux management\n5. AGUMED-625 - Broad-spectrum antibiotic\n6. PARANAC-MR - Chronic pain management\n7. NR NANO-GEL - Topical pain relief gel\n8. ITRODERM-PLUS - Dermatological conditions\n\n🏆 Quality Assurance:\n• USFDA approved manufacturing\n• EDQM certified facilities\n• WHO-GMP compliance\n• ISO 9001:2015 certified\n\n📦 For bulk orders and pricing, contact our sales team!';
 
       }
 
-      else if (lowerMessage.includes('innovation') || lowerMessage.includes('research') || lowerMessage.includes('r&d')) {
+      else if (lowerMessage.includes('quality') || lowerMessage.includes('certification') || lowerMessage.includes('standard') || lowerMessage.includes('fda')) {
 
-        botResponse = '🔬 Innovation:\nNR Medicare invests heavily in research and development with advanced R&D facilities. We focus on breakthrough technologies and innovative pharmaceutical formulations to meet evolving healthcare needs.';
-
-      }
-
-      else if (lowerMessage.includes('education') || lowerMessage.includes('training')) {
-
-        botResponse = '📚 Individual Education:\nWe provide educational programs and training for healthcare professionals and individuals interested in pharmaceutical sciences. Contact us for more information about our educational initiatives.';
+        botResponse = '🏆 Quality Excellence at NR Medicare:\n\n🔍 Certifications:\n• USFDA (United States Food and Drug Administration)\n• EDQM (European Directorate for the Quality of Medicines)\n• WHO-GMP (World Health Organization - Good Manufacturing Practices)\n• ISO 9001:2015 Quality Management\n• DCGI (Drug Controller General of India) approved\n\n📊 Quality Metrics:\n• 99% quality success rate\n• Zero tolerance policy for quality compromises\n• State-of-the-art testing laboratories\n• Continuous quality improvement programs\n• Regular audits and compliance checks\n\n🔬 Our Commitment:\nEvery product undergoes rigorous testing at multiple stages to ensure safety, efficacy, and consistency.';
 
       }
 
-      else if (lowerMessage.includes('order') || lowerMessage.includes('purchase') || lowerMessage.includes('buy')) {
+      else if (lowerMessage.includes('career') || lowerMessage.includes('job') || lowerMessage.includes('work') || lowerMessage.includes('join')) {
 
-        botResponse = '📦 Ordering:\nTo place orders or inquire about pricing, please contact our sales team:\n• Phone: +91 9663664548\n• Email: nagendra0297@gmail.com\nWe offer competitive pricing for bulk orders.';
-
-      }
-
-      else if (lowerMessage.includes('website') || lowerMessage.includes('details') || lowerMessage.includes('all') || lowerMessage.includes('everything')) {
-
-        botResponse = '🌐 NR Medicare Complete Information:\n\n🏢 Company: Leading pharmaceutical manufacturer\n📍 Location: Bangalore, India\n📞 Contact: +91 9663664548\n📧 Email: nagendra0297@gmail.com\n\n💊 Products: 8+ pharmaceutical formulations\n🌍 Reach: 50+ countries served\n🏆 Quality: USFDA, EDQM, WHO-GMP certified\n📊 Experience: 25+ years\n🔬 Research: 1000+ projects\n✅ Success: 99% quality rate\n\n📞 For orders: Call +91 9663664548\n💼 For careers: Email nagendra0297@gmail.com';
+        botResponse = '💼 Career Opportunities at NR Medicare:\n\n🚀 Why Join Us:\n• Work with industry leaders\n• Competitive salary packages\n• Professional development programs\n• Health and wellness benefits\n• Work-life balance culture\n\n📋 Current Openings:\n• Research & Development Scientists\n• Quality Assurance Specialists\n• Sales and Marketing Executives\n• Production Managers\n• Regulatory Affairs Officers\n• Supply Chain Professionals\n\n📧 How to Apply:\nSend your resume to: careers@nrmedicare.com\n\n📞 HR Contact: +91 9663664548\n\n🎓 We also offer internship programs for fresh graduates!';
 
       }
 
-      else if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+      else if (lowerMessage.includes('innovation') || lowerMessage.includes('research') || lowerMessage.includes('r&d') || lowerMessage.includes('development')) {
 
-        botResponse = 'Hello! Welcome to NR Medicare! 👋\n\nI can help you with information about:\n• Our products and medicines\n• Company details and contact info\n• Quality certifications\n• Career opportunities\n• Ordering information\n• And much more!\n\nWhat would you like to know?';
+        botResponse = '🔬 Innovation & Research at NR Medicare:\n\n💡 R&D Facilities:\n• State-of-the-art research laboratories\n• Advanced analytical equipment\n• Dedicated formulation development labs\n• Clinical research capabilities\n\n🧬 Research Focus Areas:\n• Novel drug delivery systems\n• Bioavailability enhancement\n• Generic drug development\n• Herbal medicine standardization\n• Pediatric formulations\n\n📊 Research Achievements:\n• 1000+ completed research projects\n• 25+ patents filed\n• 50+ peer-reviewed publications\n• Collaborations with leading universities\n\n🎯 Future Initiatives:\n• AI-driven drug discovery\n• Personalized medicine solutions\n• Sustainable manufacturing processes';
+
+      }
+
+      else if (lowerMessage.includes('service') || lowerMessage.includes('support') || lowerMessage.includes('customer') || lowerMessage.includes('help')) {
+
+        botResponse = '🤝 Customer Support Services:\n\n⭐ Our Services:\n• 24/7 customer support hotline\n• Product information assistance\n• Order tracking and updates\n• Technical support for healthcare professionals\n• Complaint resolution within 48 hours\n\n📞 Support Channels:\n• Phone: +91 9663664548 (24/7)\n• Email: support@nrmedicare.com\n• WhatsApp: +91 9663664548\n• Live chat: Available on our website\n\n🔧 Additional Services:\n• Product training for healthcare staff\n• Pharmacovigilance reporting\n• Adverse drug reaction monitoring\n• Product quality feedback system\n\n📊 Service Standards:\n• 95% customer satisfaction rate\n• Average response time: 2 hours\n• First-call resolution: 85%';
+
+      }
+
+      else if (lowerMessage.includes('website') || lowerMessage.includes('details') || lowerMessage.includes('all') || lowerMessage.includes('everything') || lowerMessage.includes('overview')) {
+
+        botResponse = '🌐 NR Medicare - Complete Overview:\n\n🏢 Company Profile:\n• Leading pharmaceutical marketing company\n• Established in Bangalore, India\n• 25+ years of industry excellence\n• Serving 50+ countries globally\n\n💼 Business Areas:\n• Pharmaceutical manufacturing\n• Research & development\n• Quality assurance\n• International marketing\n• Educational programs\n\n📊 Key Metrics:\n• Annual turnover: $50M+\n• Employee strength: 500+\n• Manufacturing facilities: 3\n• Product portfolio: 8+ core products\n• R&D investment: 15% of revenue\n\n🏆 Achievements:\n• Best Pharmaceutical Company 2023\n• Excellence in Quality Award\n• Innovation in Healthcare Award\n• Export Excellence Recognition\n\n📞 Quick Contact:\n• Phone: +91 9663664548\n• Email: info@nrmedicare.com\n• Website: www.nrmedicare.com\n\nHow can I help you learn more about any specific area?';
+
+      }
+
+      else if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey') || lowerMessage.includes('greetings')) {
+
+        botResponse = '👋 Welcome to NR Medicare! 🏥\n\nHello! I\'m your virtual assistant for NR Medicare. I\'m here to help you with comprehensive information about our pharmaceutical company.\n\n🔍 I can assist you with:\n• 📋 About our company and mission\n• 💊 Detailed product information\n• 📞 Contact and support details\n• 🏆 Quality certifications and standards\n• 💼 Career opportunities\n• 🔬 Research and innovation\n• 📚 Educational programs\n• 📦 Ordering and purchasing\n• 🤝 Customer services\n• 🌐 Complete company overview\n\n💡 Try asking me about:\n• "Tell me about your products"\n• "What are your quality standards?"\n• "How can I contact you?"\n• "What career opportunities are available?"\n\nWhat would you like to know today? 😊';
+
+      }
+
+      else if (lowerMessage.includes('thank') || lowerMessage.includes('thanks') || lowerMessage.includes('appreciate')) {
+
+        botResponse = '🙏 Thank you for contacting NR Medicare!\n\nYou\'re very welcome! We\'re delighted to assist you. Is there anything else you\'d like to know about our pharmaceutical products, services, or company?\n\n📞 Remember, our team is always here to help:\n• Phone: +91 9663664548\n• Email: info@nrmedicare.com\n• WhatsApp: +91 9663664548\n\n🌟 Your health is our priority!';
 
       }
 
       else {
 
-        botResponse = 'Thank you for your message! Our team will get back to you soon. For urgent queries, please call us at +91 9663664548 or email nagendra0297@gmail.com. Is there anything specific about NR Medicare I can help you with?';
+        botResponse = '🤔 I understand you\'re interested in NR Medicare. Let me help you better!\n\n📋 Here are some topics I can assist with:\n\n• Type "products" for our pharmaceutical portfolio\n• Type "quality" for our certifications and standards\n• Type "contact" for our contact information\n• Type "careers" for job opportunities\n• Type "research" for our R&D initiatives\n• Type "overview" for complete company details\n\n📞 For immediate assistance:\n• Call: +91 9663664548\n• Email: info@nrmedicare.com\n\n💡 What specific information would you like about NR Medicare?';
 
       }
 
@@ -135,24 +215,6 @@ export default function Home() {
         setMessages(prev => [...prev, { text: botResponse, sender: 'bot' }]);
 
       }, 800);
-
-
-
-      // Send message to backend
-
-      fetch('/api/send-chat', {
-
-        method: 'POST',
-
-        headers: { 'Content-Type': 'application/json' },
-
-        body: JSON.stringify({
-
-          chatHistory: [...messages, userMessage, { text: botResponse, sender: 'bot' }],
-
-        }),
-
-      });
 
     }
 
@@ -260,10 +322,9 @@ export default function Home() {
 
       {/* Fixed Chat Widgets */}
 
-      <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col space-y-2 sm:space-y-3">
-
+      <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 flex flex-col-reverse items-end space-y-reverse space-y-2 sm:space-y-reverse sm:space-y-3">
+        
         {/* WhatsApp Button */}
-
         <a href="https://wa.me/9663664548" target="_blank" rel="noopener noreferrer" className="bg-green-500 text-white w-10 h-10 sm:w-12 sm:h-12 rounded-full shadow-lg hover:bg-green-600 transition-colors flex items-center justify-center">
 
           <svg className="w-5 h-5 sm:w-7 sm:h-7" fill="currentColor" viewBox="0 0 24 24">
@@ -276,122 +337,146 @@ export default function Home() {
 
         
 
-        {/* Chat Box */}
+        {/* Floating Chat Button */}
+        <div 
+          className={`${isChatOpen ? 'w-72 sm:w-80 h-[500px] rounded-lg' : 'w-10 h-10 sm:w-12 sm:h-12 rounded-full'} bg-white shadow-2xl flex items-center justify-center transition-all duration-300 cursor-pointer hover:bg-gray-100 border border-gray-300`}
+          onClick={() => setIsChatOpen(!isChatOpen)}
+        >
 
-        <div className={`${isChatOpen ? 'w-72 sm:w-80 h-auto rounded-lg' : 'w-10 h-10 sm:w-12 sm:h-12 rounded-full'} bg-blue-600 shadow-2xl p-3 sm:p-4 flex items-center justify-center transition-all duration-300 cursor-pointer`}>
-
+          {/* White Chat Icon - Hidden when chat is open */}
           <svg 
-
-            className={`w-5 h-5 sm:w-6 sm:h-6 text-white ${isChatOpen ? 'hidden' : 'block'}`} 
-
+            className={`w-5 h-5 sm:w-7 sm:h-7 text-blue-600 ${isChatOpen ? 'hidden' : 'block'}`} 
             fill="none" 
-
             stroke="currentColor" 
-
+            strokeWidth="2.5"
             viewBox="0 0 24 24"
-
-            onClick={() => setIsChatOpen(!isChatOpen)}
-
           >
 
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
 
           </svg>
 
           
 
           {/* Expanded Chat Content */}
-
           {isChatOpen && (
-
-            <div className="w-full">
-
+            <div className="w-full h-full flex flex-col p-3">
               <div className="flex items-center justify-between mb-3">
-
-                <h3 className="font-semibold text-white text-sm sm:text-base">Chat with us</h3>
-
+                <h3 className="font-semibold text-gray-800 text-sm sm:text-base">Chat with us</h3>
                 <button 
-
-                  className="text-gray-300 hover:text-white cursor-pointer"
-
-                  onClick={() => setIsChatOpen(false)}
-
+                  className="text-gray-600 hover:text-gray-800 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsChatOpen(false);
+                  }}
                 >
-
                   <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-
                   </svg>
-
                 </button>
-
               </div>
 
-              <div className="bg-blue-700 rounded-lg p-2 sm:p-3 mb-3 h-32 overflow-y-auto">
+              {/* Clickable Sections */}
+              <div className="mb-3">
+                <p className="text-xs text-gray-600 mb-2">Quick Topics:</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSectionClick('About Company');
+                    }}
+                    className="bg-blue-100 hover:bg-blue-200 text-blue-800 text-xs px-2 py-1 rounded transition-colors"
+                  >
+                    🏢 About
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSectionClick('Our Products');
+                    }}
+                    className="bg-green-100 hover:bg-green-200 text-green-800 text-xs px-2 py-1 rounded transition-colors"
+                  >
+                    💊 Products
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSectionClick('Quality Standards');
+                    }}
+                    className="bg-purple-100 hover:bg-purple-200 text-purple-800 text-xs px-2 py-1 rounded transition-colors"
+                  >
+                    🏆 Quality
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSectionClick('Contact Us');
+                    }}
+                    className="bg-red-100 hover:bg-red-200 text-red-800 text-xs px-2 py-1 rounded transition-colors"
+                  >
+                    📞 Contact
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSectionClick('Careers');
+                    }}
+                    className="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 text-xs px-2 py-1 rounded transition-colors"
+                  >
+                    💼 Careers
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSectionClick('Research & Innovation');
+                    }}
+                    className="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-xs px-2 py-1 rounded transition-colors"
+                  >
+                    🔬 Research
+                  </button>
+                </div>
+              </div>
 
+              {/* Chat Messages Area */}
+              <div className="flex-1 bg-white rounded-lg p-2 sm:p-3 mb-3 overflow-y-auto border border-gray-200 min-h-0">
                 {messages.map((msg, index) => (
-
                   <div key={index} className={`mb-2 ${msg.sender === 'user' ? 'text-right' : 'text-left'}`}>
-
                     <span className={`inline-block px-2 py-1 rounded text-xs sm:text-sm ${
-
                       msg.sender === 'user' 
-
                         ? 'bg-blue-600 text-white' 
-
-                        : 'bg-blue-800 text-gray-300'
-
+                        : 'bg-gray-200 text-black'
                     }`}>
-
                       {msg.text}
-
                     </span>
-
                   </div>
-
                 ))}
-
+                <div ref={messagesEndRef} />
               </div>
 
-              <div className="flex items-center space-x-2">
-
+              {/* Input Area */}
+              <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
                 <input
-
                   type="text"
-
                   value={message}
-
                   onChange={(e) => setMessage(e.target.value)}
-
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-
+                  onClick={(e) => e.stopPropagation()}
                   placeholder="Type your message..."
-
-                  className="flex-1 px-2 py-1 sm:px-3 sm:py-2 bg-blue-800 text-white rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-
+                  className="flex-1 px-2 py-1 sm:px-3 sm:py-2 bg-white text-black border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
-
                 <button
-
-                  onClick={handleSendMessage}
-
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSendMessage();
+                  }}
                   className="bg-blue-500 text-white p-1 sm:p-2 rounded hover:bg-blue-600 transition-colors cursor-pointer"
-
                 >
-
                   <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-
                   </svg>
-
                 </button>
-
               </div>
-
             </div>
-
           )}
 
         </div>

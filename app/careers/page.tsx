@@ -1329,7 +1329,7 @@ export default function CareersPage() {
 
                 <p className="text-gray-600 mb-6">
 
-                  info@nrmedicare@gmail.com the recruitment process is confidential. Candidates are expected to maintain confidentiality regarding any proprietary information they may encounter during interviews.
+                  info@nrmedicare.com the recruitment process is confidential. Candidates are expected to maintain confidentiality regarding any proprietary information they may encounter during interviews.
 
                 </p>
 
@@ -1379,7 +1379,7 @@ export default function CareersPage() {
 
                 <p className="text-gray-600 mb-6">
 
-                  For any questions regarding these Terms & Conditions, please contact our HR department at info@nrmedicare@gmail.com.
+                  For any questions regarding these Terms & Conditions, please contact our HR department at info@nrmedicare.com.
 
                 </p>
 
